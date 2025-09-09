@@ -1,11 +1,9 @@
-```javascript
-/**
- * android-enhancements.js - Mobile optimization module for VGChat
- * Solves: small interface, no session persistence, no zoom capability
- * @version 1.0.0
- */
-
 (function() {
+    /**
+     * android-enhancements.js - Mobile optimization module for VGChat
+     * Solves: small interface, no session persistence, no zoom capability
+     * @version 1.0.0
+     */
     'use strict';
 
     // Mobile detection
@@ -623,5 +621,3 @@
     }
 
 })();
-```
-
