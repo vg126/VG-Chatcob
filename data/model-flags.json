@@ -1,5 +1,5 @@
 {
-  "@Claude-Opus-4": {
+  "Claude-Opus-4": {
     "thinking_budget": {
       "type": "slider",
       "min": 0,
@@ -7,7 +7,7 @@
       "default": "default"
     }
   },
-  "@Claude-Opus-4-Reasoning": {
+  "Claude-Opus-4-Reasoning": {
     "thinking_budget": {
       "type": "slider",
       "min": 0,
@@ -15,7 +15,7 @@
       "default": "default"
     }
   },
-  "@Claude-Opus-4-Search": {
+  "Claude-Opus-4-Search": {
     "thinking_budget": {
       "type": "slider",
       "min": 0,
@@ -23,7 +23,7 @@
       "default": "default"
     }
   },
-  "@Claude-Opus-4.1": {
+  "Claude-Opus-4.1": {
     "thinking_budget": {
       "type": "slider",
       "min": 0,
@@ -31,7 +31,7 @@
       "default": "default"
     }
   },
-  "@Claude-Sonnet-3.7": {
+  "Claude-Sonnet-3.7": {
     "thinking_budget": {
       "type": "slider",
       "min": 0,
@@ -39,7 +39,7 @@
       "default": "default"
     }
   },
-  "@Claude-Sonnet-3.7-Reasoning": {
+  "Claude-Sonnet-3.7-Reasoning": {
     "thinking_budget": {
       "type": "slider",
       "min": 0,
@@ -47,7 +47,7 @@
       "default": "default"
     }
   },
-  "@Claude-Sonnet-3.7-Search": {
+  "Claude-Sonnet-3.7-Search": {
     "thinking_budget": {
       "type": "slider",
       "min": 0,
@@ -55,7 +55,7 @@
       "default": "default"
     }
   },
-  "@Claude-Sonnet-4": {
+  "Claude-Sonnet-4": {
     "thinking_budget": {
       "type": "slider",
       "min": 0,
@@ -63,7 +63,7 @@
       "default": "default"
     }
   },
-  "@Claude-Sonnet-4-Reasoning": {
+  "Claude-Sonnet-4-Reasoning": {
     "thinking_budget": {
       "type": "slider",
       "min": 0,
@@ -71,7 +71,7 @@
       "default": "default"
     }
   },
-  "@Claude-Sonnet-4-Search": {
+  "Claude-Sonnet-4-Search": {
     "thinking_budget": {
       "type": "slider",
       "min": 0,
@@ -79,7 +79,7 @@
       "default": "default"
     }
   },
-  "@Gemini-2.5-Flash": {
+  "Gemini-2.5-Flash": {
     "thinking_budget": {
       "type": "stepped",
       "steps": [
@@ -94,7 +94,7 @@
       "default": "default"
     }
   },
-  "@Gemini-2.5-Flash-Lite": {
+  "Gemini-2.5-Flash-Lite": {
     "thinking_budget": {
       "type": "stepped",
       "steps": [
@@ -109,7 +109,7 @@
       "default": "default"
     }
   },
-  "@Gemini-2.5-Pro": {
+  "Gemini-2.5-Pro": {
     "thinking_budget": {
       "type": "stepped",
       "steps": [
@@ -126,7 +126,7 @@
       "default": "default"
     }
   },
-  "@GPT-5": {
+  "GPT-5": {
     "reasoning_effort": {
       "type": "stepped",
       "steps": [
@@ -138,7 +138,7 @@
       "default": "default"
     }
   },
-  "@GPT-5-mini": {
+  "GPT-5-mini": {
     "reasoning_effort": {
       "type": "stepped",
       "steps": [
@@ -150,7 +150,7 @@
       "default": "default"
     }
   },
-  "@GPT-5-nano": {
+  "GPT-5-nano": {
     "reasoning_effort": {
       "type": "stepped",
       "steps": [
@@ -162,7 +162,7 @@
       "default": "default"
     }
   },
-  "@o1": {
+  "o1": {
     "reasoning_effort": {
       "type": "stepped",
       "steps": [
@@ -173,7 +173,7 @@
       "default": "default"
     }
   },
-  "@o3": {
+  "o3": {
     "reasoning_effort": {
       "type": "stepped",
       "steps": [
@@ -184,7 +184,7 @@
       "default": "default"
     }
   },
-  "@o3-mini": {
+  "o3-mini": {
     "reasoning_effort": {
       "type": "stepped",
       "steps": [
@@ -195,7 +195,7 @@
       "default": "default"
     }
   },
-  "@o3-pro": {
+  "o3-pro": {
     "reasoning_effort": {
       "type": "stepped",
       "steps": [
@@ -206,7 +206,7 @@
       "default": "default"
     }
   },
-  "@o4-mini": {
+  "o4-mini": {
     "reasoning_effort": {
       "type": "stepped",
       "steps": [
@@ -217,7 +217,7 @@
       "default": "default"
     }
   },
-  "@Grok-3-Mini": {
+  "Grok-3-Mini": {
     "reasoning_effort": {
       "type": "stepped",
       "steps": [
@@ -227,7 +227,7 @@
       "default": "default"
     }
   },
-  "@Tako": {
+  "Tako": {
     "specificity": {
       "type": "slider",
       "min": 0,
@@ -235,7 +235,7 @@
       "default": "default"
     }
   },
-  "@Linkup-Deep-Search": {
+  "Linkup-Deep-Search": {
     "advanced_settings": {
       "type": "advanced",
       "fields": {
@@ -283,7 +283,7 @@
       }
     }
   },
-  "@Linkup-Standard": {
+  "Linkup-Standard": {
     "thinking_budget": {
       "type": "slider",
       "min": 0,
@@ -337,7 +337,7 @@
       }
     }
   },
-  "@Bagoodex-Web-Search": {
+  "Bagoodex-Web-Search": {
     "advanced_settings": {
       "type": "advanced",
       "fields": {

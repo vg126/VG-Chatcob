@@ -81,25 +81,7 @@
   }
 
   async function loadCuratedDatabase() {
-    const db = await fetch('data/model-database.json').then(r => r.json());
-    const normalized = normalizeAtSigns(db);
-    return normalized;
-  }
-
-  function normalizeAtSigns(db) {
-    const out = {};
-    for (const [cat, val] of Object.entries(db)) {
-      if (Array.isArray(val)) {
-        out[cat] = val.map(s => s.replace(/^@/, ''));
-      } else if (val && typeof val === 'object') {
-        const sub = {};
-        for (const [k, arr] of Object.entries(val)) {
-          sub[k] = (arr || []).map(s => s.replace(/^@/, ''));
-        }
-        out[cat] = sub;
-      }
-    }
-    return out;
+    return await fetch('data/model-database.json').then(r => r.json());
   }
 
   function buildMergedCategories(curated, flatList) {
