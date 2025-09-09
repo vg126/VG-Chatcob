@@ -1,0 +1,9 @@
+# Secrets and environment files
+secret.env
+Current Lab/secret.env
+*.env
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+

@@ -1,0 +1,57 @@
+  <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VGChat – Universal AI Studio</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <div class="vgchat-container">
+      <header class="vgchat-header">
+        <div class="key-input-group">
+          <input id="api-key" type="password" placeholder="Enter Poe API key" autocomplete="off" />
+          <label class="remember">
+            <input id="remember-tab" type="checkbox" /> Remember this tab
+          </label>
+          <button id="set-key">Set Key</button>
+        </div>
+
+        <div class="model-selector-container">
+          <div id="accordion-models" class="accordion-container collapsed" aria-label="Model selector">
+            <div class="accordion-selected-display" tabindex="0" title="Select model">
+              <span id="selected-model-label">Loading models…</span>
+              <span class="accordion-chevron">▼</span>
+            </div>
+            <div class="accordion-controls">
+              <input class="accordion-search" id="accordion-search" placeholder="Search models…" aria-label="Search models" />
+            </div>
+            <div class="accordion-wrapper"></div>
+          </div>
+        </div>
+
+        <div class="status">
+          <button id="flags-btn" title="Model flags">Flags</button>
+          <button id="theme-btn" title="Switch theme">Theme</button>
+          <span id="status-text">Idle</span>
+        </div>
+      </header>
+
+      <main class="vgchat-main">
+        <section id="flags-panel" class="flags-panel hidden" aria-label="Model flags"></section>
+        <div id="messages" class="vgchat-messages"></div>
+      </main>
+
+      <footer class="vgchat-input">
+        <textarea id="user-input" rows="1" placeholder="Type your message…"></textarea>
+        <button id="send">Send</button>
+      </footer>
+    </div>
+
+    <script src="assets/accordion.js"></script>
+    <script src="assets/theme.js"></script>
+    <script src="assets/flags.js"></script>
+    <script src="assets/api.js"></script>
+    <script src="assets/app.js"></script>
+  </body>
+  </html>
