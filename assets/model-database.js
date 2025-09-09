@@ -1,4 +1,5 @@
-{
+(() => {
+  const MODEL_DATABASE = {
   "Favorites": [
     "GPT-5",
     "GPT-4.1",
@@ -307,4 +308,7 @@
       "Solar-Pro-2"
     ]
   }
-}
+};
+
+  window.VGModels = MODEL_DATABASE;
+})();

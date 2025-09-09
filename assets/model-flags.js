@@ -1,0 +1,379 @@
+(() => {
+  const MODEL_FLAGS = {
+  "Claude-Opus-4": {
+    "thinking_budget": {
+      "type": "slider",
+      "min": 0,
+      "max": 30768,
+      "default": "default"
+    }
+  },
+  "Claude-Opus-4-Reasoning": {
+    "thinking_budget": {
+      "type": "slider",
+      "min": 0,
+      "max": 30768,
+      "default": "default"
+    }
+  },
+  "Claude-Opus-4-Search": {
+    "thinking_budget": {
+      "type": "slider",
+      "min": 0,
+      "max": 126000,
+      "default": "default"
+    }
+  },
+  "Claude-Opus-4.1": {
+    "thinking_budget": {
+      "type": "slider",
+      "min": 0,
+      "max": 31999,
+      "default": "default"
+    }
+  },
+  "Claude-Sonnet-3.7": {
+    "thinking_budget": {
+      "type": "slider",
+      "min": 0,
+      "max": 16384,
+      "default": "default"
+    }
+  },
+  "Claude-Sonnet-3.7-Reasoning": {
+    "thinking_budget": {
+      "type": "slider",
+      "min": 0,
+      "max": 126000,
+      "default": "default"
+    }
+  },
+  "Claude-Sonnet-3.7-Search": {
+    "thinking_budget": {
+      "type": "slider",
+      "min": 0,
+      "max": 126000,
+      "default": "default"
+    }
+  },
+  "Claude-Sonnet-4": {
+    "thinking_budget": {
+      "type": "slider",
+      "min": 0,
+      "max": 30768,
+      "default": "default"
+    }
+  },
+  "Claude-Sonnet-4-Reasoning": {
+    "thinking_budget": {
+      "type": "slider",
+      "min": 0,
+      "max": 61440,
+      "default": "default"
+    }
+  },
+  "Claude-Sonnet-4-Search": {
+    "thinking_budget": {
+      "type": "slider",
+      "min": 0,
+      "max": 126000,
+      "default": "default"
+    }
+  },
+  "Gemini-2.5-Flash": {
+    "thinking_budget": {
+      "type": "stepped",
+      "steps": [
+        0,
+        4096,
+        8192,
+        12288,
+        16384,
+        20480,
+        24576
+      ],
+      "default": "default"
+    }
+  },
+  "Gemini-2.5-Flash-Lite": {
+    "thinking_budget": {
+      "type": "stepped",
+      "steps": [
+        0,
+        4096,
+        8192,
+        12288,
+        16384,
+        20480,
+        24576
+      ],
+      "default": "default"
+    }
+  },
+  "Gemini-2.5-Pro": {
+    "thinking_budget": {
+      "type": "stepped",
+      "steps": [
+        0,
+        4096,
+        8192,
+        12288,
+        16384,
+        20480,
+        24576,
+        28672,
+        32768
+      ],
+      "default": "default"
+    }
+  },
+  "GPT-5": {
+    "reasoning_effort": {
+      "type": "stepped",
+      "steps": [
+        "minimal",
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "default"
+    }
+  },
+  "GPT-5-mini": {
+    "reasoning_effort": {
+      "type": "stepped",
+      "steps": [
+        "minimal",
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "default"
+    }
+  },
+  "GPT-5-nano": {
+    "reasoning_effort": {
+      "type": "stepped",
+      "steps": [
+        "minimal",
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "default"
+    }
+  },
+  "o1": {
+    "reasoning_effort": {
+      "type": "stepped",
+      "steps": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "default"
+    }
+  },
+  "o3": {
+    "reasoning_effort": {
+      "type": "stepped",
+      "steps": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "default"
+    }
+  },
+  "o3-mini": {
+    "reasoning_effort": {
+      "type": "stepped",
+      "steps": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "default"
+    }
+  },
+  "o3-pro": {
+    "reasoning_effort": {
+      "type": "stepped",
+      "steps": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "default"
+    }
+  },
+  "o4-mini": {
+    "reasoning_effort": {
+      "type": "stepped",
+      "steps": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "default"
+    }
+  },
+  "Grok-3-Mini": {
+    "reasoning_effort": {
+      "type": "stepped",
+      "steps": [
+        "low",
+        "high"
+      ],
+      "default": "default"
+    }
+  },
+  "Tako": {
+    "specificity": {
+      "type": "slider",
+      "min": 0,
+      "max": 100,
+      "default": "default"
+    }
+  },
+  "Linkup-Deep-Search": {
+    "advanced_settings": {
+      "type": "advanced",
+      "fields": {
+        "domain_filter_mode": {
+          "type": "select",
+          "options": [
+            "none",
+            "Include",
+            "Exclude"
+          ],
+          "default": "none"
+        },
+        "include_domains": {
+          "type": "text",
+          "placeholder": "e.g. github.com",
+          "depends_on": "domain_filter_mode",
+          "depends_value": "Include"
+        },
+        "exclude_domains": {
+          "type": "text",
+          "placeholder": "e.g. reddit.com",
+          "depends_on": "domain_filter_mode",
+          "depends_value": "Exclude"
+        },
+        "prioritize_domains": {
+          "type": "text",
+          "placeholder": "e.g. stackoverflow.com"
+        },
+        "from_date": {
+          "type": "text",
+          "placeholder": "YYYY-MM-DD"
+        },
+        "to_date": {
+          "type": "text",
+          "placeholder": "YYYY-MM-DD"
+        },
+        "include_images": {
+          "type": "checkbox",
+          "default": false
+        },
+        "image_count": {
+          "type": "text",
+          "placeholder": "Number (e.g. 5)"
+        }
+      }
+    }
+  },
+  "Linkup-Standard": {
+    "thinking_budget": {
+      "type": "slider",
+      "min": 0,
+      "max": 32768,
+      "default": "default"
+    },
+    "advanced_settings": {
+      "type": "advanced",
+      "fields": {
+        "domain_filter_mode": {
+          "type": "select",
+          "options": [
+            "none",
+            "Include",
+            "Exclude"
+          ],
+          "default": "none"
+        },
+        "include_domains": {
+          "type": "text",
+          "placeholder": "e.g. github.com",
+          "depends_on": "domain_filter_mode",
+          "depends_value": "Include"
+        },
+        "exclude_domains": {
+          "type": "text",
+          "placeholder": "e.g. reddit.com",
+          "depends_on": "domain_filter_mode",
+          "depends_value": "Exclude"
+        },
+        "prioritize_domains": {
+          "type": "text",
+          "placeholder": "e.g. stackoverflow.com"
+        },
+        "from_date": {
+          "type": "text",
+          "placeholder": "YYYY-MM-DD"
+        },
+        "to_date": {
+          "type": "text",
+          "placeholder": "YYYY-MM-DD"
+        },
+        "include_images": {
+          "type": "checkbox",
+          "default": false
+        },
+        "image_count": {
+          "type": "text",
+          "placeholder": "Number (e.g. 5)"
+        }
+      }
+    }
+  },
+  "Bagoodex-Web-Search": {
+    "advanced_settings": {
+      "type": "advanced",
+      "fields": {
+        "domain_filter": {
+          "type": "text",
+          "placeholder": "e.g. legal-tools.org"
+        },
+        "exclude_words": {
+          "type": "text",
+          "placeholder": "e.g. bemba"
+        },
+        "search_images": {
+          "type": "checkbox",
+          "default": false
+        },
+        "search_knowledge": {
+          "type": "checkbox",
+          "default": false
+        },
+        "search_location": {
+          "type": "checkbox",
+          "default": false
+        },
+        "search_videos": {
+          "type": "checkbox",
+          "default": false
+        },
+        "search_weather": {
+          "type": "checkbox",
+          "default": false
+        }
+      }
+    }
+  }
+};
+
+  window.VGModelFlags = MODEL_FLAGS;
+})();

@@ -1,7 +1,6 @@
 (() => {
-  async function loadFlagsObject() {
-    const flags = await fetch('data/model-flags.json').then(r => r.json());
-    return flags || {};
+  function loadFlagsObject() {
+    return window.VGModelFlags || {};
   }
 
   class FlagsManager {
@@ -19,8 +18,44 @@
       } catch {}
     }
 
-    async load() {
-      this.flagsDb = await loadFlagsObject();
+    generateSteps(def, flagName) {
+      const steps = [{ value: 'default', label: 'Default' }];
+      
+      if (flagName === 'thinking_budget' || flagName === 'reasoning_effort') {
+        // Handle reasoning/thinking flags
+        if (def.max > 50000) {
+          // Claude models (large max values) - 4000 increments + 0
+          steps.push({ value: 0, label: '0' });
+          for (let i = 4000; i <= def.max; i += 4000) {
+            steps.push({ value: i, label: String(i) });
+          }
+        } else if (def.max > 30000) {
+          // Gemini models - 4096 increments + 0  
+          steps.push({ value: 0, label: '0' });
+          for (let i = 4096; i <= def.max; i += 4096) {
+            steps.push({ value: i, label: String(i) });
+          }
+        } else {
+          // GPT reasoning effort - predefined steps
+          const reasoningSteps = ['minimal', 'low', 'medium', 'high'];
+          for (const step of reasoningSteps) {
+            steps.push({ value: step, label: step.charAt(0).toUpperCase() + step.slice(1) });
+          }
+        }
+      } else {
+        // Generic stepped slider - use reasonable increments
+        steps.push({ value: 0, label: '0' });
+        const increment = Math.max(1, Math.floor((def.max - def.min) / 10));
+        for (let i = def.min + increment; i <= def.max; i += increment) {
+          steps.push({ value: i, label: String(i) });
+        }
+      }
+      
+      return steps;
+    }
+
+    load() {
+      this.flagsDb = loadFlagsObject();
     }
 
     persist() {
@@ -87,33 +122,35 @@
       const current = state[flagName] ?? 'default';
 
       if (def.type === 'slider') {
+        // Generate stepped values
+        const steps = this.generateSteps(def, flagName);
         const wrap = document.createElement('div');
         wrap.className = 'flag-control';
         const input = document.createElement('input');
         input.type = 'range';
-        input.min = def.min ?? 0;
-        input.max = def.max ?? 100;
-        input.value = (current === 'default') ? (def.min ?? 0) : current;
+        input.min = 0;
+        input.max = steps.length - 1;
+        
+        // Find current step index
+        let currentStepIndex = 0;
+        if (current !== 'default') {
+          const foundIndex = steps.findIndex(step => step.value === current);
+          if (foundIndex !== -1) currentStepIndex = foundIndex;
+        }
+        input.value = currentStepIndex;
+        
         const val = document.createElement('span');
         val.className = 'flag-value';
-        val.textContent = (current === 'default') ? 'default' : String(current);
-        const chk = document.createElement('input');
-        chk.type = 'checkbox';
-        chk.title = 'Enable';
-        chk.checked = current !== 'default';
+        val.textContent = steps[currentStepIndex].label;
+        
         const update = () => {
-          if (!chk.checked) {
-            this.setStateForModel(model, flagName, 'default');
-            val.textContent = 'default';
-          } else {
-            const v = Number(input.value);
-            this.setStateForModel(model, flagName, v);
-            val.textContent = String(v);
-          }
+          const stepIndex = Number(input.value);
+          const step = steps[stepIndex];
+          this.setStateForModel(model, flagName, step.value);
+          val.textContent = step.label;
         };
+        
         input.addEventListener('input', update);
-        chk.addEventListener('change', update);
-        wrap.appendChild(chk);
         wrap.appendChild(input);
         wrap.appendChild(val);
         row.appendChild(wrap);

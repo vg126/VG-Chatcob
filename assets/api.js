@@ -37,13 +37,8 @@
     return json;
   }
 
-  function fetchModelNames() {
-    return fetch('data/model-names.json').then(r => r.json());
-  }
-
   window.VGAPI = {
-    poeChatCompletion,
-    fetchModelNames
+    poeChatCompletion
   };
 })();
 

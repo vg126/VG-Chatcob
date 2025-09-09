@@ -23,32 +23,33 @@
     container.scrollTop = container.scrollHeight;
   }
 
+  function logError(message, error) {
+    console.error(`[VGChat Error] ${message}:`, error);
+    setStatus(`ERROR: ${message}`);
+  }
+
   async function initModels() {
     setStatus('Loading models…');
-    try {
-      const curated = await loadCuratedDatabase();
-      const names = await window.VGAPI.fetchModelNames().catch(() => []);
-      const merged = buildMergedCategories(curated, names);
-      setupAccordion(merged);
-      // Choose default
-      const defaultPref = ['GPT-4.1-mini', 'Gemini-2.0-Flash'];
-      selectedModel = pickDefault(merged, defaultPref);
-      updateSelectedLabel(selectedModel);
-      // Load flags DB and render panel for selected model
-      flagsMgr = new window.VGFlags.FlagsManager();
-      await flagsMgr.load();
-      renderFlags();
-      setStatus('Models loaded');
-    } catch (e) {
-      const merged = { 'All Models': ['GPT-4.1-mini','Claude-Haiku-3','Gemini-2.0-Flash'] };
-      setupAccordion(merged);
-      selectedModel = 'GPT-4.1-mini';
-      updateSelectedLabel(selectedModel);
-      flagsMgr = new window.VGFlags.FlagsManager();
-      try { await flagsMgr.load(); } catch {}
-      renderFlags();
-      setStatus('Models fallback');
-    }
+    console.log('[VGChat] Starting model initialization');
+    
+    const curated = loadCuratedDatabase();
+    console.log(`[VGChat] Database loaded with ${Object.keys(curated).length} categories`);
+    
+    setupAccordion(curated);
+    console.log('[VGChat] Accordion setup complete');
+    
+    // Choose default
+    const defaultPref = ['GPT-4.1-mini', 'Gemini-2.0-Flash'];
+    selectedModel = pickDefault(curated, defaultPref);
+    console.log(`[VGChat] Selected default model: ${selectedModel}`);
+    updateSelectedLabel(selectedModel);
+    
+    // Load flags DB and render panel for selected model
+    flagsMgr = new window.VGFlags.FlagsManager();
+    flagsMgr.load();
+    renderFlags();
+    console.log('[VGChat] Model initialization completed successfully');
+    setStatus('Models loaded');
   }
 
   function updateSelectedLabel(name) {
@@ -80,20 +81,10 @@
     return false;
   }
 
-  async function loadCuratedDatabase() {
-    return await fetch('data/model-database.json').then(r => r.json());
+  function loadCuratedDatabase() {
+    return window.VGModels;
   }
 
-  function buildMergedCategories(curated, flatList) {
-    const curatedSet = new Set(flattenNames(curated));
-    const flatSet = new Set((flatList || []).map(s => s.trim()).filter(Boolean));
-    const symDiff = new Set([...curatedSet].filter(x => !flatSet.has(x)).concat([...flatSet].filter(x => !curatedSet.has(x))));
-    const merged = { ...curated };
-    const all = Array.from(new Set([...curatedSet, ...flatSet])).sort((a,b)=>a.localeCompare(b));
-    merged['All Models'] = all;
-    if (symDiff.size) merged['Wildcards'] = Array.from(symDiff).sort((a,b)=>a.localeCompare(b));
-    return merged;
-  }
 
   function flattenNames(db) {
     const out = [];
@@ -180,8 +171,21 @@
 
   function renderFlags() {
     const panel = el('#flags-panel');
-    if (!panel || !flagsMgr) return;
+    if (!panel || !flagsMgr) {
+      console.log('[VGChat] renderFlags: panel or flagsMgr missing', { panel: !!panel, flagsMgr: !!flagsMgr });
+      return;
+    }
+    console.log(`[VGChat] Rendering flags for model: ${selectedModel}`);
     flagsMgr.render('flags-panel', selectedModel || '');
+    const hasContent = panel.innerHTML.trim().length > 0;
+    console.log(`[VGChat] Flags panel has content: ${hasContent}`);
+    
+    // Auto-show/hide panel based on content
+    if (hasContent) {
+      panel.classList.remove('hidden');
+    } else {
+      panel.classList.add('hidden');
+    }
   }
 
   function bindUI() {
@@ -214,11 +218,6 @@
   theme.load();
   const themeBtn = el('#theme-btn');
   if (themeBtn) themeBtn.addEventListener('click', () => theme.cycle());
-  const flagsBtn = el('#flags-btn');
-  if (flagsBtn) flagsBtn.addEventListener('click', () => {
-    const p = el('#flags-panel');
-    if (p) p.classList.toggle('hidden');
-  });
   // Models
   initModels();
 })();
