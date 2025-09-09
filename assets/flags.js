@@ -7,10 +7,15 @@
   class FlagsManager {
     constructor() {
       this.flagsDb = {};
-      this.state = {}; // {'@Model': { flagName: value }}
+      this.state = {}; // {'Model': { flagName: value }}
       try {
         const saved = localStorage.getItem('vgchat_flags_state');
-        if (saved) this.state = JSON.parse(saved);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          for (const [k, v] of Object.entries(parsed)) {
+            this.state[k.replace(/^@/, '')] = v;
+          }
+        }
       } catch {}
     }
 
@@ -22,9 +27,10 @@
       try { localStorage.setItem('vgchat_flags_state', JSON.stringify(this.state)); } catch {}
     }
 
-    getModelKey(model) {
-      // Flags DB uses '@Model' keys; UI uses plain names.
-      return model.startsWith('@') ? model : `@${model}`;
+    getModelKey(model, { forApi = false } = {}) {
+      // Normalizes model names; add '@' only for API usage
+      const raw = model.replace(/^@/, '');
+      return forApi ? `@${raw}` : raw;
     }
 
     getConfigForModel(model) {
