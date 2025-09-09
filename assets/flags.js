@@ -1,40 +1,7 @@
 (() => {
-  // Loads MODEL_FLAGS from OpusGator Snippet; falls back to Template file.
   async function loadFlagsObject() {
-    let text;
-    try {
-      const res = await fetch(encodeURI('Current Lab/OpusGator Snippet.md'));
-      if (!res.ok) throw new Error('Not ok');
-      text = await res.text();
-    } catch {
-      const res2 = await fetch(encodeURI('Current Lab/Template for Flag, Database etc.md'));
-      if (!res2.ok) throw new Error('Cannot load any flags source');
-      text = await res2.text();
-    }
-    const objText = extractConstObject(text, 'MODEL_FLAGS');
-    const flags = Function(`"use strict"; return (${objText});`)();
+    const flags = await fetch('data/model-flags.json').then(r => r.json());
     return flags || {};
-  }
-
-  function extractConstObject(text, varName) {
-    const idx = text.indexOf(`const ${varName}`);
-    if (idx === -1) throw new Error(`${varName} not found`);
-    const startBrace = text.indexOf('{', idx);
-    if (startBrace === -1) throw new Error('Start brace not found');
-    let i = startBrace, depth = 0, inStr = false, strCh = '';
-    while (i < text.length) {
-      const ch = text[i];
-      const prev = text[i-1];
-      if (inStr) {
-        if (ch === strCh && prev !== '\\') inStr = false;
-      } else {
-        if (ch === '"' || ch === '\'') { inStr = true; strCh = ch; }
-        else if (ch === '{') depth++;
-        else if (ch === '}') { depth--; if (depth === 0) { i++; break; } }
-      }
-      i++;
-    }
-    return text.slice(startBrace, i);
   }
 
   class FlagsManager {
