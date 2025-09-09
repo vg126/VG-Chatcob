@@ -81,37 +81,9 @@
   }
 
   async function loadCuratedDatabase() {
-    const res = await fetch(encodeURI('Current Lab/OpusGator Snippet.md'));
-    if (!res.ok) throw new Error('Cannot load curated DB');
-    const text = await res.text();
-    const objText = extractConstObject(text, 'MODEL_DATABASE');
-    // Evaluate JS object safely in Function scope
-    const db = Function(`"use strict"; return (${objText});`)();
-    // Convert '@Name' to plain display names
+    const db = await fetch('data/model-database.json').then(r => r.json());
     const normalized = normalizeAtSigns(db);
     return normalized;
-  }
-
-  function extractConstObject(text, varName) {
-    const idx = text.indexOf(`const ${varName}`);
-    if (idx === -1) throw new Error(`${varName} not found`);
-    const startBrace = text.indexOf('{', idx);
-    if (startBrace === -1) throw new Error('Start brace not found');
-    let i = startBrace, depth = 0, inStr = false, strCh = '';
-    while (i < text.length) {
-      const ch = text[i];
-      const prev = text[i-1];
-      if (inStr) {
-        if (ch === strCh && prev !== '\\') inStr = false;
-      } else {
-        if (ch === '"' || ch === '\'') { inStr = true; strCh = ch; }
-        else if (ch === '{') depth++;
-        else if (ch === '}') { depth--; if (depth === 0) { i++; break; } }
-      }
-      i++;
-    }
-    const slice = text.slice(startBrace, i);
-    return slice;
   }
 
   function normalizeAtSigns(db) {
