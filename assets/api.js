@@ -37,21 +37,8 @@
     return json;
   }
 
-  async function fetchModelNames() {
-    const path = 'Current Lab/model names list (names only).md';
-    const res = await fetch(encodeURI(path));
-    if (!res.ok) throw new Error(`Failed to load model list: ${res.status}`);
-    const content = await res.text();
-    const lines = content.split(/\r?\n/)
-      .map(l => l.trim())
-      .filter(l => l && !/^model_handle$/i.test(l));
-    // Deduplicate while preserving order
-    const seen = new Set();
-    const names = [];
-    for (const l of lines) {
-      if (!seen.has(l)) { seen.add(l); names.push(l); }
-    }
-    return names;
+  function fetchModelNames() {
+    return fetch('data/model-names.json').then(r => r.json());
   }
 
   window.VGAPI = {
