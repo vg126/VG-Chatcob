@@ -46,7 +46,7 @@ The project uses a modular, component-based architecture:
 * **Modular design** - each .js file exports to `window.VG*` namespace
 * **Zero dependencies** - runs directly in browser without server
 
-## 🔄 Recent Architectural Changes (September 2025)
+## 🔄 Recent Architectural Changes (9th September 2025)
 
 ### Script Component Architecture
 **Problem Solved**: CORS errors when using `fetch()` with `file://` URLs prevented zero-install usage.
